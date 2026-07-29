@@ -3,6 +3,8 @@
 This repository holds scripts and workflow to autobuild new Turnip driver releases adapted for AdrenoTools usage.  
 These builds are based on https://github.com/whitebelyash/mesa-unified repository (turnip/gen8) to properly or improperly support some Adreno 8XX GPUs till the support reaches upstream.
 
+Nowadays (as A8XX support is fine except gralloc) this repo just contains a package builder.
+
 
 Old README:
 <details>
