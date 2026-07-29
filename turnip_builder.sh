@@ -24,8 +24,8 @@ run_all(){
 	check_deps
 	prepare_workdir
 	# This has path slash in the branch name and thus needs some workarounds
-	build_lib_for_android turnip/gen8 turnip-gen8 
-	build_lib_for_android turnip/gen8 turnip-gen8-sync apply
+	build_lib_for_android turnip/gen8 turnip
+	build_lib_for_android turnip/gen8 turnip-sync apply
 	#build_lib_for_android gen8-yuck
 }
 
@@ -161,8 +161,8 @@ EOF
 	cat <<EOF >"meta.json"
 {
   "schemaVersion": 1,
-  "name": "A8XX Turnip v$BUILD_VERSION",
-  "description": "A8xx support with some hacks. Built from $1 branch",
+  "name": "Mainline Turnip v$BUILD_VERSION",
+  "description": "Upstream Turnip driver with some hacks. Built from $1 branch",
   "author": "whitebelyash",
   "packageVersion": "1",
   "vendor": "Mesa",
@@ -171,9 +171,9 @@ EOF
   "libraryName": "libvulkan_freedreno.so"
 }
 EOF
-zip /tmp/a8xx-$2-V$BUILD_VERSION.zip libvulkan_freedreno.so meta.json
+zip /tmp/mainline-$2-V$BUILD_VERSION.zip libvulkan_freedreno.so meta.json
 cd -
-if ! [ -a /tmp/a8xx-$2-V$BUILD_VERSION.zip ]; then
+if ! [ -a /tmp/mainline-$2-V$BUILD_VERSION.zip ]; then
 	echo -e "$red Failed to pack the archive! $nocolor"
 fi
 }
