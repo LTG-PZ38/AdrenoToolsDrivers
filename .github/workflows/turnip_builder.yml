@@ -1,35 +1,37 @@
-name: 构建 Turnip
+name: Build "turnip"
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: '版本号'
+        description: 'Version to build'
         required: true
         type: string
 
 jobs:
-  build:
+  start_building_turnip:
     runs-on: ubuntu-24.04
     env:
       BUILD_VERSION: ${{ inputs.version }}
     steps:
-      - name: 拉取代码
-        uses: actions/checkout@v3
+    - name: Checkout repo
+      uses: actions/checkout@v3
 
-      - name: 安装编译环境
-        run: |
-          sudo sed -i 's/^Types: deb$/Types: deb deb-src/' /etc/apt/sources.list.d/ubuntu.sources
-          sudo apt update
-          sudo apt install -y build-essential flex bison glslang-tools meson
+    - name: Prepare environment
+      run: |
+        sudo sed -i 's/^Types: deb$/Types: deb deb-src/' /etc/apt/sources.list.d/ubuntu.sources
+        sudo apt update
+        sudo apt install build-essential flex bison glslang-tools python3-pip
+        pip3 install --user meson
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: 执行编译脚本
-        run: bash ./turnip_builder.sh
+    - name: Execute build script
+      run: bash ./turnip_builder.sh
 
-      - name: 上传成品
-        uses: actions/upload-artifact@v4
-        with:
-          name: mainline-turnip-v${{ inputs.version }}
-          path: |
-            /tmp/mainline-turnip-V${{ inputs.version }}.zip
-            /tmp/mainline-turnip-sync-V${{ inputs.version }}.zip
+    - name: Upload artifacts (replaces Release, no token needed)
+      uses: actions/upload-artifact@v4
+      with:
+        name: mainline-turnup-v${{ inputs.version }}
+        path: |
+          /tmp/mainline-turnip-V${{ inputs.version }}.zip
+          /tmp/mainline-turnip-sync-V${{ inputs.version }}.zip
